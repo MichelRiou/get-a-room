@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Reservation;
 
 /**
  * RoomRepository
@@ -10,12 +11,17 @@ namespace AppBundle\Repository;
  */
 class RoomRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getRoomsDispo($start_date,$end_date,$nbOfPersons)
+    public function getRoomsDispo($start_date,$end_date)
     {
         $qb=$this->createQueryBuilder('p');
-        $qb->select('p.title','p.id','p.slug')
-            ->orderBy('p.createdAt','desc')
-            ->setMaxResults($number);
+        $qb->select('p.id')
+            ->innerJoin('p.reservations','a')
+            ->where('a.startDate BETWEEN :d1 AND :d2' )
+            ->orWhere('a.endDate BETWEEN :d1 AND :d2' )
+            ->groupBy('p.id')
+            ->setParameter('d1', $start_date)
+            ->setParameter('d2', $end_date);
+
 
         return $qb->getQuery();
     }

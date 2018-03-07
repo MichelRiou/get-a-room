@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Customer;
+use AppBundle\Entity\Reservation;
 use AppBundle\Form\CustomerType;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +71,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("disponibilités/{d1,d2,nb}",name="search_room")
+     * @Route("dispo/{start_date}/{end_date}/{nbOfPersons}",name="search_room")
      * @param $start_date
      * @param $end_date
      * @param $nbOfPersons
@@ -77,18 +79,95 @@ class DefaultController extends Controller
      */
     public function searchRoomsAction($start_date,$end_date,$nbOfPersons)
     {
-        $roomsrepository = $this->getDoctrine()->getRepository("AppBundle:Room");
-        $rooms = $roomsrepository->getRoomsDispo($start_date,$end_date,$nbOfPersons)->getResult();
-        if(count($rooms)<1){
-            $msg='Aucunes chambres disponibles';
+        $reservationRepository = $this->getDoctrine()->getRepository("AppBundle:Reservation");
+        $reservations = $reservationRepository->getReservationsDone($start_date,$end_date)->getResult();
+        $roomRepository=$this->getDoctrine()->getRepository("AppBundle:Room");
+        $rooms=$roomRepository->findAll();
+        if(count($reservations)<1){
+            $msg='Aucunes réservations';
         }else{
-            $msg='Sélections des chambres disponibles';
+            $msg='Sélections des réservations';
         }
-        return $this->render("default/posts_by_author.html.twig", [
+        $newRooms=[];
+        $nbRooms=count($rooms);
+        foreach ($rooms as $key=>$value){
+
+                array_push($newRooms, $value);
+
+        }
+
+        return $this->render("reservation_periode.html.twig", [
 
             "message" => $msg,
-            "roomsList" => $rooms
+            "reservationsList" => $reservations,
+            "roomsList"=>$rooms,
+            "test"=>$newRooms
         ]);
+
+    }
+    /**
+     * @Route("dispoRoom/{start_date}/{end_date}/{nbOfPersons}",name="search_room_dispo")
+     * @param $start_date
+     * @param $end_date
+     * @param $nbOfPersons
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function searchRoomsDispoAction($start_date,$end_date,$nbOfPersons)
+    {
+        $roomRepository = $this->getDoctrine()->getRepository("AppBundle:Room");
+        $roomsOff = $roomRepository->getRoomsDispo($start_date,$end_date)->getResult();
+        $rooms=$roomRepository->findAll();
+        if(count($rooms)<1){
+            $msg='Aucunes réservations';
+        }else{
+            $msg='Sélections des réservations';
+        }
+        $newRooms=[];
+
+        foreach ($rooms as $key=>$value){
+            if (! array_search($value->getId(),$roomsOff)) {
+                array_push($newRooms, $value);
+            }
+        }
+
+        return $this->render("reservation_periode.html.twig", [
+
+            "message" => $msg,
+            "reservationsList" => $roomsOff,
+            "roomsList"=>$rooms,
+            "roomsDispo"=>$newRooms
+        ]);
+
+    }
+    /**
+     * @Route("/reservation/{id}/{d1}/{d2}", name="register_reservation", requirements={"id":"\d+"})
+     * @param $id
+     * @return Response
+     */
+    public function registerReservation($id,$d1,$d2, Request $request){
+
+        $reservationRepository = $this->getDoctrine()
+            ->getRepository("AppBundle:Reservation");
+        $roomRepository = $this->getDoctrine()
+            ->getRepository("AppBundle:Room");
+
+        $room = $roomRepository->find($id);
+
+            $reservation = new Reservation();
+            $reservation ->setCustomer($this->getUser())
+                        ->setStartDate( DateTime::createFromFormat('Y-m-d', $d1))
+                        ->setEndDate(DateTime::createFromFormat('Y-m-d', $d2))
+                        ->setRoom($room)
+                        ->setCustomer($this->getUser());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($reservation);
+
+                $em->flush();
+
+                return $this->redirectToRoute("homepage");
+
+
 
     }
 }

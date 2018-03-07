@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Reservation
  *
  * @ORM\Table(name="reservations")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\reservationRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ReservationRepository")
  */
 class Reservation
 {
@@ -119,6 +119,24 @@ class Reservation
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+        return $this;
+    }
+
+    /**
+     * @return Room
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param Room $room
+     * @return Reservation
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
         return $this;
     }
 

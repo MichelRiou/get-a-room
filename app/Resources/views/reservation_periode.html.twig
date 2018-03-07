@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ dump(reservationsList) }}
+    {{ dump(roomsList) }}
+
+   <table class="table table-bordered table-striped">
+       <tr>
+           <th>Nom</th>
+           <th>Numero</th>
+           <th>Capacité</th>
+           <th>image</th>
+       </tr>
+       {% for room in roomsDispo %}
+       <tr>
+           <td>{{ room.name }}</td>
+           <td>{{ room.roomNumber }}</td>
+           <td>{{ room.nbOfPersons }}</td>
+           <td><img src="/images/{{ room.picture }}" alt= "{{ room.picture }}" width=100px></td>
+       </tr>
+    {% endfor %}
+
+   </table>
+
+{% endblock %}
+
+
+
