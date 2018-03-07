@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class RoomRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getRoomsDispo($start_date,$end_date,$nbOfPersons)
+    {
+        $qb=$this->createQueryBuilder('p');
+        $qb->select('p.title','p.id','p.slug')
+            ->orderBy('p.createdAt','desc')
+            ->setMaxResults($number);
+
+        return $qb->getQuery();
+    }
 }

@@ -67,18 +67,27 @@ class DefaultController extends Controller
 
 
     }
+
     /**
-     * @Route("disponibilités/{year}",name="search_room",requirements={"year"="\d{4}"})
-     * @param $year
+     * @Route("disponibilités/{d1,d2,nb}",name="search_room")
+     * @param $start_date
+     * @param $end_date
+     * @param $nbOfPersons
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function searchRoomsAction($start_date,$end_date,$nbOfPersons)
     {
-        $postrepository = $this->getDoctrine()->getRepository("AppBundle:Post");
-        $posts = $postrepository->getPostsByYear($year)->getResult();
+        $roomsrepository = $this->getDoctrine()->getRepository("AppBundle:Room");
+        $rooms = $roomsrepository->getRoomsDispo($start_date,$end_date,$nbOfPersons)->getResult();
+        if(count($rooms)<1){
+            $msg='Aucunes chambres disponibles';
+        }else{
+            $msg='Sélections des chambres disponibles';
+        }
         return $this->render("default/posts_by_author.html.twig", [
 
-            "condition" => "l'année $year",
-            "postList" => $posts
+            "message" => $msg,
+            "roomsList" => $rooms
         ]);
 
     }
