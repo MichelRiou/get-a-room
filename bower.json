@@ -1,0 +1,22 @@
+{
+  "name": "get-a-room",
+  "description": "Réservation d'une chambre",
+  "main": "",
+  "authors": [
+    "MRiou"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/bower-components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.3.1"
+  }
+}

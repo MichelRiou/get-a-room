@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bower-components/bootstrap/dist/css/bootstrap.css') }}">
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body class="container-fluid">
+
+    <div class="row">
+        {% include("navbar.html.twig") %}
+    </div>
+    <header class="col-md-10 col-md-offset-1 well" style="margin-top: 70px;">
+        <h1>Mon forum</h1>
+    </header>
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+        {% block body %}{% endblock %}
+    </div>
+    </div>
+        {% block javascripts %}
+            <script src="{{ asset('bower-components/jquery/dist/jquery.js') }}"></script>
+            <script src="{{ asset('bower-components/bootstrap/dist/js/bootstrap.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,41 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        in_memory:
+            memory: ~
+        customer_provider:
+            entity:
+              class:  AppBundle:Customer
+              property: email
+
+    encoders:
+          Symfony\Component\Security\Core\User\User:  plaintext
+          AppBundle\Entity\Customer:
+              algorithm:  bcrypt
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            pattern: ^/
+            anonymous: true
+            provider: customer_provider
+            form_login:
+                login_path: customer_login_route
+                check_path: customer_check_route
+                default_target_path: /
+            logout:
+                path: customer_logout
+                target: homepage
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~
