@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+    <div class="col col-md-7 col-lg-offset-5">
     {% if error %}
         <div class="alert alert-danger">
             {{ error.message | trans }}
@@ -15,8 +16,16 @@
             <input type="text" name="_password" class="form-control">
         </div><div>
             <button type="submit" class="btn btn-primary btn-block">
-                connexion
+                Connexion
             </button>
         </div>
     </form>
+    </div>
+
+        <hr>
+<div class="col col-md-6 col-lg-offset-8">OU</div>
+
+    <div class="col col-md-6 col-lg-offset-7">
+        <div class="navbar-text"><a href="{{ path('register_customer') }}"><button type="button" class="btn btn-primary btn-block">Nouvel Utilisateur</button></a></div>
+    </div>
 {% endblock %}

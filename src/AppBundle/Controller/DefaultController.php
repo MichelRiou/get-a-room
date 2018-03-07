@@ -23,7 +23,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/login",name="customer_login")
+     * @Route("/login",name="customer_login_route")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function customerLoginAction(){
@@ -61,10 +61,25 @@ class DefaultController extends Controller
             $this->get('security.token_storage')->setToken($token);
             return $this->redirectToRoute("homepage");
         }
-        return $this->render('login_customer.html.twig', [
+        return $this->render('create_customer.html.twig', [
             "form" => $form->createView()
         ]);
 
+
+    }
+    /**
+     * @Route("disponibilités/{year}",name="search_room",requirements={"year"="\d{4}"})
+     * @param $year
+     */
+    public function searchRoomsAction($start_date,$end_date,$nbOfPersons)
+    {
+        $postrepository = $this->getDoctrine()->getRepository("AppBundle:Post");
+        $posts = $postrepository->getPostsByYear($year)->getResult();
+        return $this->render("default/posts_by_author.html.twig", [
+
+            "condition" => "l'année $year",
+            "postList" => $posts
+        ]);
 
     }
 }

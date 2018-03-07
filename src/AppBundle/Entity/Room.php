@@ -44,6 +44,12 @@ class Room
     private $roomNumber;
 
     /**
+     * @var string
+     * @ORM\Column(name="picture", type="string", length=100)
+     */
+    private $picture;
+
+    /**
      * @var ArrayCollection
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Reservation", mappedBy="room")
      */
@@ -133,6 +139,26 @@ class Room
     }
 
     /**
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param string $picture
+     * @return Room
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+        return $this;
+    }
+
+
+
+    /**
      * @return ArrayCollection
      */
     public function getReservations()
@@ -181,4 +207,5 @@ class Room
     {
         $this->reservations->removeElement($reservation);
     }
+
 }

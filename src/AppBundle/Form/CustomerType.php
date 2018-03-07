@@ -18,15 +18,15 @@ class CustomerType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class, ['label'=>'Nom'])
-                ->add('firstName', TextType::class,['label'=>'Prénom'])
+        $builder->add('name', TextType::class, ['label'=>'Nom','attr'=>['class'=>'form-control']])
+                ->add('firstName', TextType::class,['label'=>'Prénom','attr'=>['class'=>'form-control']])
                 ->add('email',RepeatedType::class,['type'=> EmailType::class,
-                            'first_options'=>['label'=>'Saisir votre Email/Identifiant','required'=>true],
-                            'second_options'=>['label'=>'Veuillez confirmer votre Email/Identifiant'],
+                            'first_options'=>['label'=>'Saisir votre Email/Identifiant','required'=>true,'attr'=>['class'=>'form-control']],
+                            'second_options'=>['label'=>'Veuillez confirmer votre Email/Identifiant','attr'=>['class'=>'form-control']],
                             'invalid_message'=>'La saisie n\'est pas identique'])
                 ->add('plainPassword', RepeatedType::class,['type'=> PasswordType::class,
-                            'first_options'=>['label'=>'Veuillez saisir le mot de passe','required'=>true],
-                            'second_options'=>['label'=>'Veuillez confirmer le mot de passe'],
+                            'first_options'=>['label'=>'Veuillez saisir le mot de passe','required'=>true,'attr'=>['class'=>'form-control']],
+                            'second_options'=>['label'=>'Veuillez confirmer le mot de passe','attr'=>['class'=>'form-control']],
                             'invalid_message'=>'Le mot de passe n\'est pas identique'])
                 ->add('submit',SubmitType::class,
                 ['label'=>'Valider','attr'=>['class'=>'btn btn-primary']]);

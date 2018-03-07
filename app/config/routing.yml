@@ -3,7 +3,7 @@ app:
     type: annotation
 
 customer_check_route:
-  path: /author-login-check
+  path: /customer_login_check
 
 customer_logout:
   path: /customer_logout
